@@ -34,7 +34,7 @@ jobs:
 
       - name: Run unit tests with coverage and JUnit reports
         env:
-          JEST_JUNIT_OUTPUT: coverage/junit.xml
+           JEST_JUNIT_OUTPUT: coverage/junit.xml
           run: npm run test:ci
 
       - name: Publish test results to Checks
