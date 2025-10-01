@@ -32,10 +32,13 @@ jobs:
         run: |
           npm run build 2>/dev/null || echo "No build script found, skipping build step"
 
+      - name: Install jest-junit
+        run: npm i --save-dev jest-junit
       - name: Run unit tests with coverage and JUnit reports
-        env:
-          JEST_JUNIT_OUTPUT: coverage/junit.xml # only 6 spaces here
-        run: npm run test:ci # also 6 spaces here
+        run: |
+          JEST_JUNIT_OUTPUT_DIR=coverage \
+          JEST_JUNIT_OUTPUT_NAME=junit.xml \
+          npm run test:coverage -- --reporters=jest-junit
 
       - name: Publish test results to Checks
         uses: dorny/test-reporter@v1
@@ -74,7 +77,7 @@ jobs:
       - name: Create deployment package
         run: |
           set -euo pipefail
-           STAGING="$GITHUB_WORKSPACE/deployment-package"
+          STAGING="$GITHUB_WORKSPACE/deployment-package"
           rm -rf "$STAGING"
           mkdir -p "$STAGING"
 
